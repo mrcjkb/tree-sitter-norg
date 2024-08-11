@@ -1,0 +1,25 @@
+name: Push to Luarocks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  luarocks-upload:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to count the commits
+      - name: Install C/C++ Compiler
+        uses: rlalik/setup-cpp-compiler@master
+        with:
+          compiler: clang-latest
+      - name: Install tree-sitter CLI
+        uses: tree-sitter/setup-action@v1
+        with:
+          tree-sitter-ref: v0.22.5
+      - name: Build
+        run: tree-sitter build
+
